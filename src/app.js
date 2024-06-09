@@ -6,6 +6,8 @@ const errorHandler = require("./middlewares/errorHandler");
 const userRoutes = require("./routes/userRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const authRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
+
 const userWhatsappRoutes = require("./routes/userWhatsappRoutes");
 const connectDB = require("./config/db");
 
@@ -24,6 +26,7 @@ app.use("/api/images", imageRoutes);
 app.use("/api/whatsapp", userWhatsappRoutes);
 
 app.use("/api/auth", authRoutes);
+app.use("/api/product", productRoutes);
 
 
 
