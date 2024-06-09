@@ -1,20 +1,19 @@
 const express = require('express');
 const multer = require('multer');
 const imageController = require('../controllers/imageController');
-const path = require("path");
+const path = require('path');
 
 const router = express.Router();
 
 // Konfigurasi Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'public/uploads')); // Menyimpan di folder public/uploads
+    cb(null, path.join(__dirname, '../../public/uploads')); // Menyimpan di folder public/uploads di root proyek
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname); // Menggunakan timestamp untuk nama file yang unik
   }
 });
-
 
 const upload = multer({ storage: storage });
 
