@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const imageController = require('../controllers/imageController');
+const path = require("path");
 
 const router = express.Router();
 

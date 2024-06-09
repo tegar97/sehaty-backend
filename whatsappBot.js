@@ -26,6 +26,20 @@ mongoose.connect(process.env.MONGO_URI_BACKUP).then(() => {
       store: store,
       backupSyncIntervalMs: 300000,
     }),
+    puppeteer: {
+        headless: true,
+        args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-accelerated-2d-canvas",
+            "--no-first-run",
+            "--no-zygote",
+            "--single-process",
+            "--disable-gpu",
+        ],
+        },
+        
   });
 
   client.on("ready", () => {
