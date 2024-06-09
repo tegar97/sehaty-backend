@@ -1,5 +1,5 @@
-const { sign } = require('jsonwebtoken');
-const mongoose = require('mongoose');
+const { sign } = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const WhatsappUserTokenSchema = new mongoose.Schema({
   code: {
@@ -8,12 +8,16 @@ const WhatsappUserTokenSchema = new mongoose.Schema({
     unique: true,
   },
   userNumber: {
-    type:  String,
+    type: String,
     required: false,
   },
-  signkey : {
+  signkey: {
     type: String,
     required: true,
+  },
+  deviceName: {
+    type: String,
+    required: false,
   },
   isLinked: {
     type: Boolean,
@@ -24,7 +28,6 @@ const WhatsappUserTokenSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
- 
 });
 
-module.exports = mongoose.model('WhatsappUserToken', WhatsappUserTokenSchema);
+module.exports = mongoose.model("WhatsappUserToken", WhatsappUserTokenSchema);

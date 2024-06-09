@@ -6,6 +6,7 @@ const ocrService = require("./src/services/ocrService"); // Sesuaikan path denga
 const geminiService = require("./src/services/geminiService");
 const nutriScore = require("./src/utils/nutriScore");
 const axios = require("axios");
+const { generateRandomFileName } = require("./src/utils/random");
 
 let userSessions = {};
 const userSessionsPath = path.join(__dirname, "userSessions.json");
@@ -48,8 +49,6 @@ client.on("message_create", async (message) => {
 
   if (messageBody.startsWith("start_session")) {
     const code = messageBody.split(" ")[1];
-    userSessions[chatId] = { code };
-    fs.writeFileSync(userSessionsPath, JSON.stringify(userSessions, null, 2));
     if (!code) {
       message.reply(
         "Please provide a code in the format: start_session <CODE>"
@@ -70,6 +69,13 @@ client.on("message_create", async (message) => {
         message.reply(
           "Session started successfully and has been success linked with application."
         );
+        userSessions[chatId] = {
+          code,
+        };
+        fs.writeFileSync(
+          userSessionsPath,
+          JSON.stringify(userSessions, null, 2)
+        );
       } else {
         message.reply(response.message);
       }
@@ -77,8 +83,7 @@ client.on("message_create", async (message) => {
       console.error("Error starting session:", error);
       message.reply("Error starting session. Please try again.");
       const errorMessage =
-        error.response?.data?.message ||
-        "Error starting session. Please try again later.";
+        error.response?.data?.message || "Internal server error 500";
       message.reply(`Reason: ${errorMessage}`);
     }
 
@@ -86,12 +91,36 @@ client.on("message_create", async (message) => {
   }
 
   if (messageBody === "get_session") {
-    if (userSessions[chatId] && userSessions[chatId].uniqueCode) {
-      message.reply(`Your session code is: ${userSessions[chatId].uniqueCode}`);
+    if (userSessions[chatId] && userSessions[chatId].code) {
+      const code = userSessions[chatId].code;
+
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/whatsapp/check-session",
+          {
+            headers: {
+              "x-auth-token": code,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          const { userNumber, code } = response.data;
+          message.reply(
+            `Session is active.\nUser Number: ${userNumber}\nCode: ${code}`
+          );
+        } else {
+          message.reply(response.data.message);
+        }
+      } catch (error) {
+        console.error("Error checking session:", error);
+        const errorMessage =
+          error.response?.data?.message ||
+          "Error checking session. Please try again later.";
+        message.reply(`Error checking session. Reason: ${errorMessage}`);
+      }
     } else {
-      message.reply(
-        'No session found. Please start a session with "start_session <UNIQUE_CODE>".'
-      );
+      message.reply("No session found .");
     }
     return;
   }
@@ -114,9 +143,9 @@ client.on("message_create", async (message) => {
 
     if (media) {
       // Dapatkan ekstensi file dari mimetype
-      const extension = media.mimetype.split("/")[1];
-      const fileName = `upload.${extension}`;
-      const filePath = path.join(__dirname, "uploads", fileName);
+
+      const fileName = generateRandomFileName(chatId,media.mimetype);
+      const filePath = path.join(__dirname, "public/uploads", fileName);
 
       // Simpan file media ke sistem file
       fs.writeFileSync(filePath, media.data, "base64");
@@ -163,7 +192,11 @@ client.on("message_create", async (message) => {
         message.reply(responseMessage);
 
         // Hapus file setelah selesai
-        fs.unlinkSync(filePath);
+        // fs.unlinkSync(filePath);
+        console.log(messageBody);
+        if (messageBody.length > 1) {
+          message.reply("Testing image with text");
+        }
       } catch (error) {
         message.reply(
           "Terjadi kesalahan saat memproses gambar. Silakan coba lagi."

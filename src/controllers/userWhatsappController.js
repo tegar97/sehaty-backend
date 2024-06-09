@@ -79,3 +79,25 @@ exports.startWhatsappSession = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// API untuk check session
+exports.checkSession = async (req, res) => {
+  const signKey = req.signKey;
+
+  const token = await whatsappToken.findOne({
+    signkey: signKey,
+    isLinked: true,
+  });
+
+  if (!token) {
+    return res
+      .status(404)
+      .json({ message: "No active session found for this user number" });
+  }
+
+  res.status(200).json({
+    message: "Session is active",
+    userNumber: token.userNumber,
+    code: token.code,
+  });
+};

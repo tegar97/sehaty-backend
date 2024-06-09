@@ -3,4 +3,6 @@ node_modules
 .wwebjs_auth/*
 vision.json
 
+public/uploads/*
+
 
