@@ -8,6 +8,7 @@ exports.createScanHistory = async (req, res) => {
     const { name, photo, nutrition, nutriScore, grade, portion100g, warnings } =
       req.body;
 
+
     // skipcq: JS-0123, JS-0123
     const newProduct = new product({
       name,
@@ -23,26 +24,17 @@ exports.createScanHistory = async (req, res) => {
       signkey: signKey,
       isLinked: true,
     });
-
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({
+        status: "error",
+        message: "Tidak terotorisasi",
+      });
     }
 
-    const scanHistory = new scanHistories({
-      productId: newProduct._id,
-      nutrition,
-      nutriScore,
-      grade,
-      whatsappToken: token,
-      portion100g,
-      warnings,
-    });
-
-    await scanHistory.save();
 
     res.status(201).json({
-      message: "Scan history saved successfully",
-      data: scanHistory,
+      status: "success",
+      message: "Riwayat pemindaian berhasil disimpan",
     });
   } catch (error) {
     res.status(500).json({
@@ -62,9 +54,11 @@ exports.getScanHistories = async (req, res) => {
     });
 
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({
+        status: "error",
+        message: "Tidak terotorisasi",
+      });
     }
-
     const scanHistoriesData = await scanHistories
       .find({ whatsappToken: token })
       .populate("productId");
@@ -100,11 +94,13 @@ exports.getScanHistories = async (req, res) => {
     });
 
     res.status(200).json({
+      status: "success",
       message: "Scan histories fetched successfully",
       data: transformedData,
     });
   } catch (error) {
     res.status(500).json({
+      status: "error",
       message: "Error fetching scan histories",
       error: error.message,
     });
@@ -168,11 +164,13 @@ exports.getScanHistoryDetail = async (req, res) => {
     };
 
     res.status(200).json({
+      status: "success",
       message: "Scan history fetched successfully",
       data: transformedData,
     });
   } catch (error) {
     res.status(500).json({
+      status: "error",
       message: "Error fetching scan history",
       error: error.message,
     });

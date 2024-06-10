@@ -1,30 +1,51 @@
-const ocrService = require('../services/ocrService');
-const geminiService = require('../services/geminiService');
-const nutriScore = require('../utils/nutriScore');
+const ocrService = require("../services/ocrService");
+const geminiService = require("../services/geminiService");
+const nutriScore = require("../utils/nutriScore");
 exports.uploadImage = async (req, res, next) => {
   try {
+    // Validasi input: cek apakah ada file yang di-upload
+    if (!req.file) {
+      return res.status(400).json({
+        status: "error",
+        message: "File gambar tidak ditemukan. Silakan unggah file gambar.",
+      });
+    }
+
     const imagePath = req.file.path;
     const text = await ocrService.extractText(imagePath);
     const nutritionData = await geminiService.extractNutritionData(text);
-     // Calculate Nutri-Score
-     const {totalNutriScore,grade , portion100g , warnings}  = nutriScore.calculateNutriScore(nutritionData);
-     res.status(200).json({
-        status: "success",
-        message: "Nutrition data processed successfully",
-        data: {
-          nutrition: nutritionData,
-          nutriScore: totalNutriScore,
-          grade: grade,
-          portion100g: portion100g,
-          warnings: warnings
-        }
+
+    // Validasi output dari OCR dan ekstraksi nutrisi
+    if (!nutritionData) {
+      return res.status(400).json({
+        status: "error",
+        message:
+          "Data nutrisi tidak ditemukan dalam gambar. Pastikan gambar mengandung informasi nutrisi yang valid.",
       });
+    }
+
+    // Hitung Nutri-Score
+    const { totalNutriScore, grade, portion100g, warnings } =
+      nutriScore.calculateNutriScore(nutritionData);
+
+    res.status(200).json({
+      status: "success",
+      message: "Data nutrisi berhasil diproses.",
+      data: {
+        nutrition: nutritionData,
+        nutriScore: totalNutriScore,
+        grade,
+        portion100g,
+        warnings : warnings.join(", ")
+      },
+    });
   } catch (error) {
     res.status(500).json({
-        status: "error",
-        message: "An error occurred while processing the nutrition data",
-        error: error.message
-      });
+      status: "error",
+      message: "Terjadi kesalahan saat memproses data nutrisi.",
+      error: error.message,
+
+    });
     next(error);
   }
 };

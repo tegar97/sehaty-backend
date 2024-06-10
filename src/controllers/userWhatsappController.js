@@ -99,5 +99,28 @@ exports.checkSession = async (req, res) => {
     message: "Session is active",
     userNumber: token.userNumber,
     code: token.code,
+    isLinked: token.isLinked,
+    deviceName: token.deviceName ? token.deviceName : "No device name" ,
+    
+  });
+};
+
+// Api check is token linked or not
+
+exports.checkIsLinked = async (req, res) => {
+  const signKey = req.signKey;
+
+  const token = await whatsappToken.findOne({
+    signkey: signKey,
+  });
+
+  if (!token) {
+    return res.status(404).json({ message: "No token found" });
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Token found",
+    isLinked: token.isLinked,
   });
 };

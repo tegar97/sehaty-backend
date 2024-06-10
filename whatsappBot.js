@@ -148,8 +148,8 @@ async function handleGetSession(message, chatId) {
       });
 
       if (response.status === 200) {
-        const { userNumber, code } = response.data;
-        message.reply(`Session is active.\nUser Number: ${userNumber}\nCode: ${code}`);
+        const { userNumber, code , deviceName } = response.data;
+        message.reply(`Session is active.\nUser Number: ${userNumber}\Device: ${deviceName}`);
       } else {
         message.reply(response.data.message);
       }
