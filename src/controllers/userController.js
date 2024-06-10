@@ -8,7 +8,6 @@ exports.createScanHistory = async (req, res) => {
     const { name, photo, nutrition, nutriScore, grade, portion100g, warnings } =
       req.body;
 
-
     // skipcq: JS-0123, JS-0123
     const newProduct = new product({
       name,
@@ -30,7 +29,6 @@ exports.createScanHistory = async (req, res) => {
         message: "Tidak terotorisasi",
       });
     }
-
 
     res.status(201).json({
       status: "success",
@@ -140,7 +138,7 @@ exports.getScanHistoryDetail = async (req, res) => {
       _id: scanHistory._id,
       productId: scanHistory.productId._id,
       productName: scanHistory.productId.name,
-      productPhoto: scanHistory.productId.photo,
+      productPhoto: `${process.env.API_BASE_URL}/uploads/${scanHistory.productId.photo}`,
       energy: scanHistory.nutrition.energy,
       totalFat: scanHistory.nutrition.totalFat,
       protein: scanHistory.nutrition.protein,
