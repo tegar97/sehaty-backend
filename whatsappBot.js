@@ -278,6 +278,10 @@ ${warnings.length > 0 ? warnings.map((warning) => `- ${warning}`).join('\n') : '
         },
       };
 
+      message.reply('Kamu bisa melihat riwayat hasil scan dengan cara mengetikan "history".')
+      
+
+
       const token = userSessions[chatId].code;
       await axios.post(`${API_BASE_URL}/api/product/add-history`, scanData, {
         headers: {
