@@ -67,7 +67,7 @@ exports.getScanHistories = async (req, res) => {
         _id: scan._id,
         productId: scan.productId._id,
         productName: scan.productId.name,
-        productPhoto: scan.productId.photo,
+        productPhoto: `${process.env.API_BASE_URL}/uploads/${scanHistory.productId.photo}`,
         energy: scan.nutrition.energy,
         totalFat: scan.nutrition.totalFat,
         protein: scan.nutrition.protein,
