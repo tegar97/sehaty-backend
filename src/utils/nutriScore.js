@@ -108,13 +108,13 @@ exports.calculateNutriScore = (data) => {
   // get data after convert to 100g
 
   const portion100g = {
-    energy: energy_kJ,
-    totalFat: saturated_fat_g,
-    protein: protein_g,
-    totalCarbs: data.totalCarbs,
-    dietaryFiber: fiber_g,
-    sugars: sugars_g,
-    sodium: sodium_mg,
+    energy: Math.round(energy_kJ),
+    totalFat: Math.round(saturated_fat_g),
+    protein: Math.round(protein_g),
+    totalCarbs: Math.round(data.totalCarbs),
+    dietaryFiber: Math.round(fiber_g),
+    sugars: Math.round(sugars_g),
+    sodium: Math.round(sodium_mg),
     portionSize: "100g",
   };
 

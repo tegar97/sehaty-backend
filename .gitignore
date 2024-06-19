@@ -5,3 +5,4 @@ vision.json
 
 public/uploads/*
 .env
+userSessions.json

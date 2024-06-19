@@ -34,7 +34,8 @@ exports.uploadImage = async (req, res, next) => {
       data: {
         nutrition: nutritionData,
         nutriScore: totalNutriScore,
-        grade,
+        productPhoto : `${process.env.ASSET_URL}/uploads/${req.file.filename}`,
+        grade, 
         portion100g,
         warnings : warnings.join(", ")
       },

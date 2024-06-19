@@ -15,6 +15,7 @@ const generateUniqueCode = async (req, res) => {
     userId,
     expiryDate,
   });
+  
 
   await uniqueCode.save();
 
@@ -42,22 +43,5 @@ const validateUniqueCode = async (req, res) => {
   res.json(user);
 };
 
-// API untuk check session
-const checkSession = async (req, res) => {
-  const { userNumber } = req.query;
 
-  const token = await WhatsappUserToken.findOne({ userNumber, isLinked: true });
-
-  if (!token) {
-    return res
-      .status(404)
-      .json({ message: "No active session found for this user number" });
-  }
-
-  res.status(200).json({
-    message: "Session is active",
-    userNumber: token.userNumber,
-    code: token.code,
-  });
-};
 module.exports = { generateUniqueCode, validateUniqueCode };

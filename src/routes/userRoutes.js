@@ -9,8 +9,6 @@ router.post('/refresh-token', refresh);
 router.post('/generate-code', auth, generateUniqueCode);
 router.get('/telegram-login', validateUniqueCode);
 
-
-
 // Example of a protected route
 router.get('/me', auth, (req, res) => {
   res.send('Welcome to your profile');
