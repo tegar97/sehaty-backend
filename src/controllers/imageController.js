@@ -37,7 +37,7 @@ exports.uploadImage = async (req, res, next) => {
         productPhoto : `${process.env.ASSET_URL}/uploads/${req.file.filename}`,
         grade, 
         portion100g,
-        warnings : warnings.join(", ")
+        warnings : warnings
       },
     });
   } catch (error) {
