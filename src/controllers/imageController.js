@@ -25,7 +25,7 @@ exports.uploadImage = async (req, res, next) => {
     }
 
     // Hitung Nutri-Score
-    const { totalNutriScore, grade, portion100g, warnings } =
+    const { totalNutriScore, grade, portion100g, warnings  , positiveFeedback} =
       nutriScore.calculateNutriScore(nutritionData);
 
     res.status(200).json({
@@ -37,7 +37,8 @@ exports.uploadImage = async (req, res, next) => {
         productPhoto : `${process.env.ASSET_URL}/uploads/${req.file.filename}`,
         grade, 
         portion100g,
-        warnings : warnings
+        warnings : warnings,
+        positiveFeedback : positiveFeedback 
       },
     });
   } catch (error) {

@@ -61,6 +61,8 @@ exports.getScanHistories = async (req, res) => {
       .find({ whatsappToken: token })
       .populate("productId");
 
+    
+
     // Transform the data to flatten the structure and convert warnings array to string
     const transformedData = scanHistoriesData.map((scan) => {
       return {
@@ -90,7 +92,7 @@ exports.getScanHistories = async (req, res) => {
         createdAt: scan.createdAt,
       };
     });
-
+    
     res.status(200).json({
       status: "success",
       message: "Scan histories fetched successfully",

@@ -86,25 +86,43 @@ exports.calculateNutriScore = (data) => {
 
   // Warnings for cholesterol, saturated fat, sugars, sodium, and total fat
   let warnings = [];
-
-
+  let positiveFeedback = [];
+  
   if (cholesterol_mg > 100) {
-    // Adjusted for 100g
     warnings.push("Kolesterol tinggi");
   }
+  
   if (saturated_fat_g > 5) {
-    // Adjusted for 100g
     warnings.push("Lemak jenuh tinggi");
   }
+  
   if (sugars_g > 15) {
-    // Adjusted for 100g
     warnings.push("Gula tinggi");
   }
-  if (sodium_mg > 600) {
-    // Adjusted for 100g
+  
+  if (sodium_mg > 540) {
     warnings.push("Natrium tinggi");
   }
+  
+  if (cholesterol_mg <= 200) {
+    positiveFeedback.push("Kolesterol rendah");
+  }
+  
+  if (saturated_fat_g < 1) {
+    positiveFeedback.push("Lemak jenuh rendah");
+  } 
+  
+  if (sugars_g < 5) {
+    positiveFeedback.push("Gula rendah");
+  }
+  
+  if (sodium_mg < 100) {
+    positiveFeedback.push("Natrium rendah");
+  } 
+  
 
+  
+  
   // get data after convert to 100g
 
   const portion100g = {
@@ -118,5 +136,5 @@ exports.calculateNutriScore = (data) => {
     portionSize: "100g",
   };
 
-  return { totalNutriScore, grade, portion100g, warnings };
+  return { totalNutriScore, grade, portion100g, warnings , positiveFeedback};
 };
