@@ -14,7 +14,26 @@ exports.uploadImage = async (req, res, next) => {
     const imagePath = req.file.path;
     const text = await ocrService.extractText(imagePath);
     const nutritionData = await geminiService.extractNutritionData(text);
+    if (!nutritionData) {
+      return res.status(400).json({
+        status: "error",
+        data : null,
+        message:
+          "Data nutrisi tidak ditemukan dalam gambar. Pastikan gambar mengandung informasi nutrisi yang valid.",
+      });
+    }
 
+    // Tambahkan validasi untuk memastikan tidak semua nilai dalam nutritionData adalah 0
+    const allZero = Object.values(nutritionData).every(value => value === 0);
+    if (allZero) {
+      return res.status(400).json({
+        status: "error",
+        data : null,
+
+        message:
+          "Semua nilai nutrisi adalah 0. Pastikan gambar mengandung informasi nutrisi yang valid.",
+      });
+    }
     // Validasi output dari OCR dan ekstraksi nutrisi
     if (!nutritionData) {
       return res.status(400).json({
