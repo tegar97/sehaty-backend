@@ -100,8 +100,7 @@ exports.checkSession = async (req, res) => {
     userNumber: token.userNumber,
     code: token.code,
     isLinked: token.isLinked,
-    deviceName: token.deviceName ? token.deviceName : "No device name" ,
-    
+    deviceName: token.deviceName ? token.deviceName : "No device name",
   });
 };
 
@@ -117,10 +116,14 @@ exports.checkIsLinked = async (req, res) => {
   if (!token) {
     return res.status(404).json({ message: "No token found" });
   }
-
+  let phoneNumber = token.userNumber;
+  if (phoneNumber && phoneNumber.includes("@c.us")) {
+    phoneNumber = phoneNumber.replace("@c.us", "");
+  }
   res.status(200).json({
     status: "success",
     message: "Token found",
     isLinked: token.isLinked,
+    phoneNumber: phoneNumber,
   });
 };
