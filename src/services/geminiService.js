@@ -42,12 +42,6 @@ if the data is not found, replace the value with "0"
 dont make new line or space between the data
 
 
-
-
-
-
-
-
   `;
 
   const result = await model.generateContent(prompt);

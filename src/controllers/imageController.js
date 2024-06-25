@@ -28,8 +28,6 @@ exports.uploadImage = async (req, res, next) => {
     if (allZero) {
       return res.status(400).json({
         status: "error",
-        data : null,
-
         message:
           "Semua nilai nutrisi adalah 0. Pastikan gambar mengandung informasi nutrisi yang valid.",
       });
