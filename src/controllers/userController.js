@@ -30,6 +30,18 @@ exports.createScanHistory = async (req, res) => {
       });
     }
 
+    const newScanHistory = new scanHistories({
+      productId: newProduct._id,
+      nutrition,
+      nutriScore,
+      grade,
+      whatsappToken: token,
+      portion100g,
+      warnings,
+    });
+
+    await newScanHistory.save();
+
     res.status(201).json({
       status: "success",
       message: "Riwayat pemindaian berhasil disimpan",
