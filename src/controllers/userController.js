@@ -100,7 +100,7 @@ exports.getScanHistories = async (req, res) => {
         portion100gSugars: scan.portion100g.sugars,
         portion100gSodium: scan.portion100g.sodium,
         portion100gSize: scan.portion100g.portionSize,
-        warnings: scan.warnings.join(", "),
+        warnings: scan.warnings,
         createdAt: scan.createdAt,
       };
     });
