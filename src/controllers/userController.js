@@ -5,7 +5,7 @@ const whatsappToken = require("../models/whatsappToken");
 // skipcq: JS-0045
 exports.createScanHistory = async (req, res) => {
   try {
-    const { name, photo, nutrition, nutriScore, grade, portion100g, warnings } =
+    const { name, photo, nutrition, nutriScore, grade, portion100g, warnings, positive } =
       req.body;
 
     // skipcq: JS-0123, JS-0123
@@ -38,7 +38,9 @@ exports.createScanHistory = async (req, res) => {
       whatsappToken: token,
       portion100g,
       warnings,
+      positive
     });
+
 
     await newScanHistory.save();
 
@@ -101,6 +103,7 @@ exports.getScanHistories = async (req, res) => {
         portion100gSodium: scan.portion100g.sodium,
         portion100gSize: scan.portion100g.portionSize,
         warnings: scan.warnings,
+        positive : scan.positive,
         createdAt: scan.createdAt,
       };
     });

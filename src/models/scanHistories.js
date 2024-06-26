@@ -42,6 +42,7 @@ const scanHistorySchema = new mongoose.Schema({
     },
   },
   warnings: [String],
+  positive : [String],
   createdAt: {
     type: Date,
     default: Date.now,
