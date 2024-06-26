@@ -88,15 +88,15 @@ exports.calculateNutriScore = (data) => {
   let warnings = [];
   let positiveFeedback = [];
   
-  if (cholesterol_mg > 100) {
-    warnings.push("Kolesterol tinggi");
-  }
+  // if (cholesterol_mg > 100) {
+  //   warnings.push("Kolesterol tinggi");
+  // }
   
   if (saturated_fat_g > 5) {
-    warnings.push("Lemak jenuh tinggi");
+    warnings.push("Tinggi Lemak");
   }
   
-  if (sugars_g > 15) {
+  if (sugars_g > 10) {
     warnings.push("Gula tinggi");
   }
   
@@ -104,12 +104,12 @@ exports.calculateNutriScore = (data) => {
     warnings.push("Natrium tinggi");
   }
   
-  if (cholesterol_mg <= 200) {
-    positiveFeedback.push("Kolesterol rendah");
-  }
+  // if (cholesterol_mg <= 200) {
+  //   positiveFeedback.push("Kolesterol rendah");
+  // }
   
   if (saturated_fat_g < 1) {
-    positiveFeedback.push("Lemak jenuh rendah");
+    positiveFeedback.push("Rendah Lemak");
   } 
   
   if (sugars_g < 5) {
